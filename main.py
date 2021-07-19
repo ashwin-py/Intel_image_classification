@@ -1,6 +1,6 @@
 from data import Data
 from model import CnnModel
-from train import Train
+from trainer import Trainer
 
 BATCH_SIZE = 64
 IMG_SIZE = 150
@@ -15,7 +15,7 @@ train_ds, val_ds = data_obj.load_dataset(0.2, BATCH_SIZE, (IMG_SIZE, IMG_SIZE))
 model_obj = CnnModel(len(classes), IMG_SIZE, IMG_SIZE)
 model = model_obj.load_pretrained_model()
 # print(type(model))
-trainer = Train(model, train_ds, val_ds, BATCH_SIZE, EPOCHS)
+trainer = Trainer(model, train_ds, val_ds, BATCH_SIZE, EPOCHS)
 
 callback1 = trainer.tensorboard_callback(log_dir='./logs')
 callback2 = trainer.save_checkpoint(path='./checkpoints')
