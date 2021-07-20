@@ -35,7 +35,7 @@ class CnnModel(Model):
         return model
 
     def load_pretrained_model(self, model_name):
-        base_model = eval(f"""tf.keras.applications.{model_name}(
+        base_model = eval(f"""tensorflow.keras.applications.{model_name}(
             include_top=False,
             input_shape=(150, 150, 3)
         )""")
