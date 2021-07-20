@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import os
 from flask_cors import CORS, cross_origin
 from classifier import Classifier
@@ -33,4 +33,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)

@@ -30,18 +30,11 @@
   </form>
 
 	{% if prediction %}
-  <img src={{img_path}} height="400px" width="400px" alt='Image'>
-              {{prediction | safe}}
+  <img src={{img_path}} height="250px" width="250px" alt='Image'>
+  {{prediction | safe}}
 
 	{% endif %}
 
 </div>
-
-
-
-
-
-
-
 </body>
 </html>
