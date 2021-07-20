@@ -5,12 +5,12 @@ from trainer import Trainer
 BATCH_SIZE = 64
 IMG_SIZE = 150
 EPOCHS = 50
-
+VALIDATION_SPLIT = 0.2
 
 data_obj = Data('./data/seg_train')
 classes = data_obj.classes
 
-train_ds, val_ds = data_obj.load_dataset(0.2, BATCH_SIZE, (IMG_SIZE, IMG_SIZE))
+train_ds, val_ds = data_obj.load_dataset(VALIDATION_SPLIT, BATCH_SIZE, (IMG_SIZE, IMG_SIZE))
 
 model_obj = CnnModel(len(classes), IMG_SIZE, IMG_SIZE)
 """
