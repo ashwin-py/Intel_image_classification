@@ -1,5 +1,9 @@
 import tensorflow as tf
 import numpy as np
+import pandas as pd
+
+physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 
 class Classifier:
@@ -13,9 +17,12 @@ class Classifier:
             image,
             target_size=(self.image_size, self.image_size)
         )
+
         img_array = tf.keras.preprocessing.image.img_to_array(img)
+        img_array = tf.keras.applications.efficientnet.preprocess_input(img_array)
         img_array = tf.expand_dims(img_array, 0)
 
         predictions = self.model.predict(img_array)
-        predicted_class = self.classes[np.argmax(predictions)]
-        return predictions, predicted_class
+        predictions = ["{:.4%}".format(score) for score in predictions[0]]
+        df = pd.DataFrame(data={'Classes': self.classes, 'Scores': predictions})
+        return df.to_html()

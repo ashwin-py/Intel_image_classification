@@ -1,7 +1,10 @@
-from tensorflow.keras.layers import Conv2D, MaxPool2D, Dense, Flatten, GlobalAveragePooling2D
-from tensorflow.keras import Sequential, Model
+from tensorflow.keras.layers import Conv2D, MaxPool2D, Dense, Flatten, GlobalAveragePooling2D, Dropout
+from tensorflow.keras import Sequential, Model, Input
 from tensorflow.keras.layers.experimental.preprocessing import RandomRotation, RandomFlip, Rescaling
 import tensorflow as tf
+
+physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 
 class CnnModel(Model):
@@ -11,17 +14,20 @@ class CnnModel(Model):
         self.img_height = img_height
         self.img_width = img_width
 
-    def load_model(self):
-        data_augmentation = Sequential([
+        self.data_augmentation = Sequential([
             RandomFlip('horizontal'),
             RandomRotation(0.2)
         ])
 
-        resacle_layer = Rescaling(1. / 255, input_shape=(self.img_height, self.img_width, 3))
+        self.resacle_layer = Rescaling(
+            1. / 255,
+            input_shape=(self.img_height, self.img_width, 3)
+        )
 
+    def load_model(self):
         model = Sequential([
-            data_augmentation,
-            resacle_layer,
+            self.data_augmentation,
+            self.resacle_layer,
             Conv2D(32, (3, 3), activation='relu'),
             MaxPool2D(),
             Conv2D(64, (3, 3), activation='relu'),
@@ -34,18 +40,26 @@ class CnnModel(Model):
         ])
         return model
 
-    def load_pretrained_model(self, model_name):
-        base_model = eval(f"""tensorflow.keras.applications.{model_name}(
+    def load_pretrained_model(self):
+
+        base_model = tf.keras.applications.EfficientNetB7(
             include_top=False,
             input_shape=(150, 150, 3)
-        )""")
+        )
+
+        preprocess_input = tf.keras.applications.efficientnet.preprocess_input
         base_model.trainable = False
 
-        x = GlobalAveragePooling2D()(base_model.output)
-        x = Dense(512, activation='relu')(x)
+        inputs = Input(shape=(self.img_height, self.img_width, 3))
+        x = self.data_augmentation(inputs)
+        x = preprocess_input(x)
+        x = base_model(x)
+        x = GlobalAveragePooling2D()(x)
         x = Dense(128, activation='relu')(x)
+        x = Dropout(0.2)(x)
+        x = Dense(64, activation='relu')(x)
         x = Dense(self.num_of_classes, activation='softmax')(x)
 
-        model = Model(inputs=base_model.input, outputs=x)
+        model = Model(inputs=inputs, outputs=x)
 
         return model

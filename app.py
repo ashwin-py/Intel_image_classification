@@ -1,13 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 import os
 from flask_cors import CORS, cross_origin
-from utils import decode_image
 from classifier import Classifier
 
 os.putenv('LANG', 'en_US.UTF-8')
 os.putenv('LC_ALL', 'en_US.UTF-8')
 
-model_path = "./models/test.h5"
+model_path = "./mobilenetv3"
 
 app = Flask(__name__)
 CORS(app)
@@ -20,17 +19,18 @@ def home():
     return render_template('index.html')
 
 
-@app.route("/predict", methods=['POST'])
+@app.route("/submit", methods=['GET', 'POST'])
 @cross_origin()
-def predict_route():
-    if request.method == 'POST':
-        image = request.files['file']
-        image_path = "static/" + image.filename
-        image.save('sample.jpg')
-    predtictions, predicted_class = classifier.predict("sample.jpg")
+def predict():
 
-    return jsonify({"text": predicted_class})
+    img = request.files['my_image']
+
+    img_path = 'static/' + img.filename
+    img.save(img_path)
+
+    predictions = classifier.predict(img_path)
+    return render_template("index.html", prediction=predictions, img_path=img_path)
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(debug=True)
