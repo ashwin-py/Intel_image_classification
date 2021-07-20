@@ -28,7 +28,7 @@ ResNet152V2	, NASNetLarge
 """
 
 model = model_obj.load_pretrained_model("ResNet152V2")
-# print(type(model))
+
 trainer = Trainer(model, train_ds, val_ds, BATCH_SIZE, EPOCHS)
 
 callback1 = trainer.tensorboard_callback(log_dir='./logs')
