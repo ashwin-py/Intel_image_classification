@@ -23,9 +23,11 @@ def home():
 @app.route("/predict", methods=['POST'])
 @cross_origin()
 def predict_route():
-    data = request.json['data']
-    decode_image(data, "input_image.png")
-    predtictions, predicted_class = classifier.predict("input_image.png")
+    if request.method == 'POST':
+        image = request.files['file']
+        image_path = "static/" + image.filename
+        image.save('sample.jpg')
+    predtictions, predicted_class = classifier.predict("sample.jpg")
 
     return jsonify({"text": predicted_class})
 
