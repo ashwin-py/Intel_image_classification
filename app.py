@@ -25,7 +25,7 @@ def predict():
 
     img = request.files['my_image']
 
-    img_path = 'static/' + img.filename
+    img_path = 'static/test.jpg'
     img.save(img_path)
 
     predictions = classifier.predict(img_path)
