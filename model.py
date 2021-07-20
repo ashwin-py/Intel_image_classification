@@ -34,16 +34,14 @@ class CnnModel(Model):
         ])
         return model
 
-    def load_pretrained_model(self):
-        base_model = tf.keras.applications.ResNet50(
+    def load_pretrained_model(self, model_name):
+        base_model = eval(f"""tf.keras.applications.{model_name}(
             include_top=False,
             input_shape=(150, 150, 3)
-        )
+        )""")
         base_model.trainable = False
 
-        base_model_output = base_model.output
-
-        x = GlobalAveragePooling2D()(base_model_output)
+        x = GlobalAveragePooling2D()(base_model.output)
         x = Dense(512, activation='relu')(x)
         x = Dense(128, activation='relu')(x)
         x = Dense(self.num_of_classes, activation='softmax')(x)

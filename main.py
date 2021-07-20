@@ -13,7 +13,21 @@ classes = data_obj.classes
 train_ds, val_ds = data_obj.load_dataset(0.2, BATCH_SIZE, (IMG_SIZE, IMG_SIZE))
 
 model_obj = CnnModel(len(classes), IMG_SIZE, IMG_SIZE)
-model = model_obj.load_pretrained_model()
+"""
+Model Names:
+Xception	, InceptionV3
+VGG16	    , InceptionResNetV2
+VGG19	    , MobileNet
+ResNet50	, MobileNetV2
+ResNet101	, DenseNet121
+ResNet152	, DenseNet169
+ResNet50V2	, DenseNet201
+ResNet101V2	, NASNetMobile
+ResNet152V2	, NASNetLarge
+
+"""
+
+model = model_obj.load_pretrained_model("ResNet152V2")
 # print(type(model))
 trainer = Trainer(model, train_ds, val_ds, BATCH_SIZE, EPOCHS)
 
