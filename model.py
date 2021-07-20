@@ -3,9 +3,6 @@ from tensorflow.keras import Sequential, Model, Input
 from tensorflow.keras.layers.experimental.preprocessing import RandomRotation, RandomFlip, Rescaling
 import tensorflow as tf
 
-physical_devices = tf.config.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
 
 class CnnModel(Model):
     def __init__(self, num_of_classes, img_height, img_width):
