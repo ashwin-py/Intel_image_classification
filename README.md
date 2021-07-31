@@ -15,5 +15,5 @@ Experimented with Different set of Models like:
 All Models fine-tuned for 50 epochs with Dropout Layer of 0.2 in Dense layer and 
 had ~90% validation accuracy.
 
-##Deployment
+## Deployment
 Deployed using Flask and Using MobileNetV3 model.
