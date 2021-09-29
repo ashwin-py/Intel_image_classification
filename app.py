@@ -1,36 +1,44 @@
-from flask import Flask, request, render_template
-import os
-from flask_cors import CORS, cross_origin
+import streamlit as st
+import pandas as pd
 from classifier import Classifier
 
-os.putenv('LANG', 'en_US.UTF-8')
-os.putenv('LC_ALL', 'en_US.UTF-8')
+# header
+st.title("Image Classification")
 
-model_path = "./mobilenetv3"
-
-app = Flask(__name__)
-CORS(app)
-classifier = Classifier(model=model_path)
-
-
-@app.route("/", methods=['GET'])
-@cross_origin()
-def home():
-    return render_template('index.html')
-
-
-@app.route("/submit", methods=['GET', 'POST'])
-@cross_origin()
-def predict():
-
-    img = request.files['my_image']
-
-    img_path = 'static/test.jpg'
-    img.save(img_path)
-
+def predict(img_path):
+    """
+        A function to predict the class of the image
+        Arg:
+            img_path: str : takes a image path
+        Returns:
+            predictions: pandas dataframe
+    """
+    model_path = "./mobilenetv3" 
+    classifier = Classifier(model_path)
     predictions = classifier.predict(img_path)
-    return render_template("index.html", prediction=predictions, img_path=img_path)
+
+    return predictions
 
 
-if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=True)
+default_predicts_for_test_image = pd.DataFrame(
+{'Classes': ['buildings', 'forest', 'glacier', 'mountain', 'sea', 'street'],
+'Prediction Scores':['0.000%', '0.000%', '99.925%', '0.021%', '0.054%','0.000%']}
+)
+
+
+# two columns, col1 for image and col2 for result dataframe
+col1, col2 = st.columns(2)
+
+# widget for uploading a image file
+img_path = st.file_uploader(
+"Upload an image to test", 
+type=["png", "jpg", "jpeg"]
+)
+
+if img_path is not None:
+    prediction = predict(img_path)
+    col1.image(img_path, caption=f"Actual Image", width=275)
+    col2.dataframe(prediction)
+else:
+    col1.image('test.jpg', caption=f"Actual Image", width=275)
+    col2.dataframe(default_predicts_for_test_image)
