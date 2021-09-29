@@ -13,6 +13,13 @@ class Classifier:
         self.classes = ['buildings', 'forest', 'glacier', 'mountain', 'sea', 'street']
 
     def predict(self, image):
+        """
+        A fucntion to predict an image 
+        Args: 
+            image: str: Takes a image path 
+
+        Returns predictions in pandas dataframe
+        """
         img = tf.keras.preprocessing.image.load_img(
             image,
             target_size=(self.image_size, self.image_size)
@@ -23,6 +30,6 @@ class Classifier:
         img_array = tf.expand_dims(img_array, 0)
 
         predictions = self.model.predict(img_array)
-        predictions = ["{:.4%}".format(score) for score in predictions[0]]
-        df = pd.DataFrame(data={'Classes': self.classes, 'Scores': predictions})
-        return df.to_html()
+        predictions = ["{:.3%}".format(score) for score in predictions[0]]
+        df = pd.DataFrame(data={'Classes': self.classes, 'Prediction Scores': predictions})
+        return df

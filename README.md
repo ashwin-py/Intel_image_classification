@@ -1,6 +1,6 @@
 # Intel_image_classification
-## Data
-Data is used from kaggle link below,
+## Dataset
+Dataset is used from kaggle link below,
 https://www.kaggle.com/puneet6060/intel-image-classification/  
 
 This Data contains around 25k images of size 150x150 distributed under 6 categories.  
