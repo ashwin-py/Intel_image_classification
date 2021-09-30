@@ -32,7 +32,7 @@ All Models fine-tuned for 50 epochs with Dropout Layer of 0.2 in Dense layer and
 had ~91% validation accuracy.
 
 ## Deployment
-Deployed using Heroku server, using tf lite MobileNetV3 model.  
+Deployed using Heroku server, and tf_lite MobileNetV3 model.  
 
 <p>
    <img src="https://github.com/geraltPy/Intel_image_classification/blob/main/images/webpage.png" width="900" height="450"/>
