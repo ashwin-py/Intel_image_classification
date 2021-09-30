@@ -25,14 +25,16 @@ The Train, Test and Prediction data is separated in each zip files. There are ar
 This data was initially published on https://datahack.analyticsvidhya.com by Intel to host a Image classification Challenge.  
 
 ## Model
-Finetuned MobileNetV3 on this dataset
+Finetuned MobileNetV3 on this dataset.   
+Model is quantized using tf_lite converter to reduce the size from 25.6mb to 4.8mb for deployment.
 
 ## Results
-All Models fine-tuned for 50 epochs with Dropout Layer of 0.2 in Dense layer and 
+Model is fine-tuned for 50 epochs with Dropout Layer of 0.2 in Dense layer and 
 had ~91% validation accuracy.
 
 ## Deployment
 Deployed using Heroku server, and tf_lite MobileNetV3 model.  
+https://geraltpy-image-classifier.herokuapp.com/  
 
 <p>
    <img src="https://github.com/geraltPy/Intel_image_classification/blob/main/images/webpage.png" width="900" height="450"/>
