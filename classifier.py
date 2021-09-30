@@ -20,12 +20,7 @@ class Classifier:
 
         Returns predictions in pandas dataframe
         """
-        img = tf.keras.preprocessing.image.load_img(
-            image,
-            target_size=(self.image_size, self.image_size)
-        )
-
-        img_array = tf.keras.preprocessing.image.img_to_array(img)
+        img_array = tf.image.resize(image, (150, 150), method='nearest')
         img_array = tf.keras.applications.efficientnet.preprocess_input(img_array)
         img_array = tf.expand_dims(img_array, 0)
 
@@ -33,3 +28,4 @@ class Classifier:
         predictions = ["{:.3%}".format(score) for score in predictions[0]]
         df = pd.DataFrame(data={'Classes': self.classes, 'Prediction Scores': predictions})
         return df
+
