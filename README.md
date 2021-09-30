@@ -1,4 +1,4 @@
-# Intel_image_classification
+# Intel image classification
 ## Dataset
 Dataset is used from kaggle link below,
 https://www.kaggle.com/puneet6060/intel-image-classification/  
@@ -32,4 +32,8 @@ All Models fine-tuned for 50 epochs with Dropout Layer of 0.2 in Dense layer and
 had ~91% validation accuracy.
 
 ## Deployment
-Deployed using Flask and Using MobileNetV3 model.
+Deployed using Heroku server, using tf lite MobileNetV3 model.  
+
+<p>
+   <img src="https://github.com/geraltPy/Intel_image_classification/blob/main/images/webpage.png" width="900" height="450"/>
+</p>
